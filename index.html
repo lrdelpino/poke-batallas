@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="widht=device-widht, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie-edge">
+	<title>Pokemon Random Battle</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+	<h1 class="title">Pokemon Random Battle</h1>
+
+	<button class="button" onclick="consultarPokemones()">Nueva batalla!</button>
+
+	<div class="pokemon-list" id="listaPokemon">
+		<div class="pokemon" id="pokemon-1">
+			<img src="">
+			<p></p>
+		</div>
+
+		<div class="vs">VS</div>
+
+		<div class="pokemon" id="pokemon-2">
+			<img src="">
+			<p></p>
+		</div>
+	</div>
+
+	<script>
+		let lista = document.getElementById("listaPokemon")
+
+		function consultarPokemon(id, num) {
+			fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+			.then(function(response) {
+				response.json()
+				.then(function(pokemon) {
+					crearPokemon(pokemon, num)
+				})
+			})
+		}
+
+		function consultarPokemones() {
+			let primerId = Math.round(Math.random() * 807)
+			let segundoId = Math.round(Math.random() * 807)
+
+			consultarPokemon(primerId, 1)
+			consultarPokemon(segundoId, 2)
+		}
+
+		function crearPokemon(pokemon, num) {
+			//se convierte la data en html
+			let item = lista.querySelector(`#pokemon-${num}`)
+
+			let imagen = item.getElementsByTagName("img")[0]
+			imagen.setAttribute("src", pokemon.sprites.front_default)
+
+			let nombre = item.getElementsByTagName("p")[0]
+			nombre.textContent = pokemon.name
+		}
+
+		consultarPokemones()
+
+	</script>
+</body>
+</html>
